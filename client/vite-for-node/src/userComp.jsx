@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import EmployeesComp from "./system/employeesComp";
-import DepartmentComp from "./system/departmentComp";
-import ShiftsComp from "./system/shiftsComp";
+import EmployeesComp from "./system/employees/employeesComp";
+import DepartmentComp from "./system/department/departmentComp";
+import ShiftsComp from "./system/shift/ShiftsComp";
 import SignOutComp from "./system/signout";
-import UsersSystemComp from "./system/usersSystemComp"
+import UsersSystemComp from "./system/users/UsersSystemComp"
 
 export default function UserComp() {
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState('1');
   const [user, setUser] = React.useState({});
 
   const handleChange = (event, newValue) => {

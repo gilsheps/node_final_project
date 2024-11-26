@@ -2,7 +2,6 @@ const Department = require("../models/departmentModel.js");
 
 
 const getAllDepartment = (filters) => {
-    console.log("getAllEmployees", filters);
     return Department.find(filters);
   };
 
@@ -10,7 +9,12 @@ const getAllDepartment = (filters) => {
     return new Department(obj).save()
   }
 
+  const updateDepartment = (id, obj) => {
+    return Department.findByIdAndUpdate(id, obj);
+  };
+
   module.exports = {
     getAllDepartment,
-    addDepartment
+    addDepartment,
+    updateDepartment
   }

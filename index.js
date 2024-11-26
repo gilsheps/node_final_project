@@ -5,6 +5,7 @@ const shiftsController = require("./server/controllers/shiftsController.js");
 const authController = require("./server/controllers/authController.js");
 const employeesController = require("./server/controllers/employeesController.js");
 const departmentController = require("./server/controllers/departmentController.js");
+const data = require("./server/insertData.js")
 
 const app = express();
 const PORT = 3005;
@@ -25,6 +26,7 @@ app.use("/auth", authController);
 app.use("/shifts", shiftsController);
 app.use("/employees", employeesController);
 app.use("/department", departmentController);
+app.use("/data", data);
 
 app.listen(PORT, () => {
   console.log(`app is listening at http://localhost:${PORT}`);

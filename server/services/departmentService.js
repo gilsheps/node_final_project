@@ -4,23 +4,18 @@ const getAllDepartment = (filters) => {
   return departmentRepo.getAllDepartment(filters);
 };
 
+const addDepartment = (obj) => {
+  return departmentRepo.addDepartment(obj)
+}
 
-const getById = (id) => {
-  return userRepo.getById(id);
+
+const updateDepartment = (id, obj) => {
+  return departmentRepo.updateDepartment(id, obj);
 };
-
-const addEmployee = (obj) => {
-  return employeesRepo.addEmployee(obj);
-};
-
 
 
 module.exports = {
   getAllDepartment,
-  // getById,
-  // addUser,
-  // updateUser,
-  // deleteUser,
-  // getUsersFromJh,
-  // isUserExists,
+  addDepartment,
+  updateDepartment
 };

@@ -5,5 +5,5 @@ const departmentSchema = new mongoose.Schema({
   manager: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
 });
 
-const Department = mongoose.model("department", departmentSchema);
+const Department = mongoose.model("Department", departmentSchema);
 module.exports = Department;

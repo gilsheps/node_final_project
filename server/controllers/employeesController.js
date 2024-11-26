@@ -9,12 +9,17 @@ router.get("/", async (req, res) => {
   const employees = await employeesService.getAllEmployees(filters);
   res.send(employees);
 });
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const employee = await employeesService.getById(id);
+  res.json(employee);
+});
 
 // create new employees
 router.post("/", async (req, res) => {
   const obj = req.body;
   const result = await employeesService.addEmployee(obj);
-  res.json(result)
+  res.json(result);
 });
 
 module.exports = router;
