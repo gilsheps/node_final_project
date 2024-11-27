@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
@@ -9,31 +9,39 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import { getDepartmentsList } from "../../utils/utilsDepartment";
-import { addNewEmployee } from "../../utils/utilsEmployee";
+import { getDepartmentsList } from "../../utils/utilsDepartment.js";
+import { addNewEmployee, editEmployee } from "../../utils/utilsEmployee";
 
 export default function NewEmployeeComp() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [user, setUser] = React.useState({
+  const [user, setUser] = useState({
     firstName: "",
     lastName: "",
     startWorkYear: 0,
-    departmentId: 0,
+    departmentId: "",
   });
-  const [departmentsList, setDepartmentsList] = React.useState([]);
+  const [departmentsList, setDepartmentsList] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    addNewEmployee(user);
+    if (e.nativeEvent.submitter.name === "btn_edit") {
+      editEmployee(user);
+    } else {
+      addNewEmployee(user);
+    }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     getDepartmentsList().then((dep) => {
       setDepartmentsList(dep.data);
+      console.log(state.employee);
+      if (state.employee) {
+        const depName = dep.data.filter(
+          (e) => e._id == state.employee.departmentId
+        )[0].name;
+        setUser({ ...state.employee, depName });
+      }
     });
-    if (state) {
-      setUser(state.employee);
-    }
-  }, [user]);
+  }, []);
 
   const hadleCancelClick = () => {
     navigate("/main_page");
@@ -92,23 +100,28 @@ export default function NewEmployeeComp() {
         <Select
           labelId="demo-simple-select-helper-label"
           id="demo-simple-select"
-          defaultValue={user?.departmentId || ""}
-          onChange={(e) => setUser({ ...user, departmentId: e.target.value })}
+          value={user?.departmentId || ""}
+          onChange={(e) => setUser({ ...user, departmentId: e.target.id })}
           displayEmpty={false}
         >
           {departmentsList.map((item, index) => {
             return (
-              <MenuItem value={item._id} key={index}>
+              <MenuItem value={item.name} name={item._id} key={index}>
                 {item.name}
               </MenuItem>
             );
           })}
         </Select>
       </FormControl>
-
-      <Button type="submit" variant="contained">
-        Save
-      </Button>
+      {state.user ? (
+        <Button type="submit" name="btn_edit" variant="contained">
+          Edit
+        </Button>
+      ) : (
+        <Button type="submit" name="btn_save" variant="contained">
+          Save
+        </Button>
+      )}
       <Button onClick={hadleCancelClick} variant="contained">
         Cancel
       </Button>

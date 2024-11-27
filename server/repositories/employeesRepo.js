@@ -2,16 +2,17 @@ const Employees = require("../models/employeeModel.js");
 const Department = require("../models/departmentModel.js");
 
 const getAllEmployees = (filters) => {
+  console.log("getAllEmployees", filters);
   return Employees.find(filters);
 };
 
-const addEmployee = async(obj) => {
-  console.log('addEmployee',obj)
-  const department = await Department.findById(obj.departmentId)
+const addEmployee = async (obj) => {
+  console.log("addEmployee", obj);
+  const department = await Department.findById(obj.departmentId);
   if (department) {
-    console.log('User found:', department);
+    console.log("User found:", department);
   } else {
-    console.log('User not found.');
+    console.log("User not found.");
   }
   // Department
   return new Employees(obj).save();

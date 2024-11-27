@@ -1,23 +1,22 @@
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { getAllEmployee } from "../../utils/utilsEmployee";
 import { getDepartmentsList } from "../../utils/utilsDepartment";
-import NewEmployeeComp from "./newEmployeeComp";
-import { Box, Button, InputLabel, Select, MenuItem } from "@mui/material";
+import { Button, Select, MenuItem } from "@mui/material";
 import { getAllShifts } from "../../utils/utilsShifts";
+import { getEmployeeName } from "../../utils/utilsEmployee";
 
 export default function EmployeesComp() {
-  const [employees, setEmployees] = React.useState([{}]);
-  const [shifts, setShifts] = React.useState([]);
-  const [departmentsList, setDepartmentsList] = React.useState([]);
-  const [department, setDepartment] = React.useState({});
+  const [employees, setEmployees] = useState([{}]);
+  const [shifts, setShifts] = useState([]);
+  const [departmentsList, setDepartmentsList] = useState([]);
+  const [department, setDepartment] = useState({});
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/add_employee", { state: {} });
-    console.log("clickkkkkk");
+    navigate("/employee", { state: {} });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllEmployee().then((data) => {
       setEmployees(data.data);
     });
@@ -29,12 +28,19 @@ export default function EmployeesComp() {
     });
   }, []);
 
-  const haddleDepartmentsClick = (employee, index) => {
-    navigate("/edit_department", { state: getDepartmentById(employee) });
+  const haddleDepartmentsClick = async (item) => {
+    const dep = getDepartmentById(item);
+    console.log("haddleDepartmentsClick", dep.manager);
+    const managerName = await getEmployeeName(dep.manager);
+    console.log("haddleDepartmentsClick", managerName);
+    const department = { ...dep, managerName: managerName }
+    navigate("/department", {
+      state: { department },
+    });
   };
 
-  const handleNameClick = (employee, index) => {
-    navigate("/add_employee", { state: { employee } });
+  const handleNameClick = (employee) => {
+    navigate("/employee", { state: { employee } });
   };
 
   const getDepartmentById = (employee) => {
@@ -48,13 +54,13 @@ export default function EmployeesComp() {
     return (
       <tr key={index}>
         <td>
-          <Button onClick={() => handleNameClick(employee, index)}>
+          <Button onClick={() => handleNameClick(employee)}>
             {`${employee.firstName} ${employee.lastName}`}
           </Button>
         </td>
         <td>
           <div>
-            <Button onClick={() => haddleDepartmentsClick(employee, index)}>
+            <Button onClick={() => haddleDepartmentsClick(employee)}>
               {getDepartmentById(employee).name}
             </Button>
           </div>

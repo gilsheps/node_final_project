@@ -5,8 +5,9 @@ const shiftsController = require("./server/controllers/shiftsController.js");
 const authController = require("./server/controllers/authController.js");
 const employeesController = require("./server/controllers/employeesController.js");
 const departmentController = require("./server/controllers/departmentController.js");
-const data = require("./server/insertData.js")
-
+const data = require("./server/insertData.js");
+const usersController = require("./server/controllers/usersController.js");
+const authenticateToken = require("./server/middleware/authenticateToken.js");
 const app = express();
 const PORT = 3005;
 
@@ -23,10 +24,11 @@ app.use(
 
 app.use("/", express.json());
 app.use("/auth", authController);
-app.use("/shifts", shiftsController);
-app.use("/employees", employeesController);
-app.use("/department", departmentController);
+app.use("/shifts", authenticateToken, shiftsController);
+app.use("/employees", authenticateToken, employeesController);
+app.use("/department", authenticateToken, departmentController);
 app.use("/data", data);
+app.use("/users", authenticateToken, usersController);
 
 app.listen(PORT, () => {
   console.log(`app is listening at http://localhost:${PORT}`);

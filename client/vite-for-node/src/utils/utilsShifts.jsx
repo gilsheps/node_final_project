@@ -1,13 +1,13 @@
-import axios from "axios";
+import api from "./api.js"
 
 const BASE_URL = "http://localhost:3005/";
 
 const getAllShifts = async () => {
-  return await axios.get(`${BASE_URL}shifts`);
+  return await api.get(`${BASE_URL}shifts`);
 };
 
 const sendUpdateShift = async(obj) => {
-  return await axios.put(`${BASE_URL}shifts/${obj._id}`, obj);
+  return await api.put(`${BASE_URL}shifts/${obj._id}`, obj);
 };
 
 export { getAllShifts, sendUpdateShift };

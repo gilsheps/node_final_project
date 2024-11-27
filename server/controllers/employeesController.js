@@ -15,11 +15,32 @@ router.get("/:id", async (req, res) => {
   res.json(employee);
 });
 
+router.get("/:departmentId", async (req, res) => {
+  const { departmentId } = req.params;
+  const employee = await employeesService.getAllEmployees({
+    departmentId: ObjectId(departmentId),
+  });
+  res.json(employee);
+});
+
 // create new employees
 router.post("/", async (req, res) => {
   const obj = req.body;
   const result = await employeesService.addEmployee(obj);
   res.json(result);
+});
+
+// update employee
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const obj = req.body;
+    delete obj._id;
+    const result = await employeesService.updateEmployee(id, obj);
+    res.json(result);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 module.exports = router;

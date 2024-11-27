@@ -1,22 +1,26 @@
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { getEmployeeName } from "../../utils/utilsEmployee";
 import {
   getDepartmentsList,
-  getFullDepartmentsList,
+  getEmployessByDepartmentList,
 } from "../../utils/utilsDepartment";
 import { Button } from "@mui/material";
 
 export default function DepartmentComp() {
-  const [departmentsList, setDepartmentsList] = React.useState([]);
-
-  React.useEffect(() => {
+  const [departmentsList, setDepartmentsList] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
     const fetchData = async () => {
       const { data } = await getDepartmentsList();
       const managerPromises = data.map(async (dep) => {
         const managerName = await getEmployeeName(dep.manager);
-        return { ...dep, managerName }; // Return the updated department object
+        const { data: employeeList } = await getEmployessByDepartmentList(
+          dep._id
+        );
+        return { ...dep, managerName, employeeList };
       });
+
       const updatedDepartments = await Promise.all(managerPromises);
       console.log("updatedDepartments", updatedDepartments);
 
@@ -26,18 +30,26 @@ export default function DepartmentComp() {
     fetchData().catch(console.error);
   }, []);
 
-  const handleNameClick = (department, index) => {
-    console.log("handleNameClick", department, index);
+  const handleNameClick = (department) => {
+    console.log("handleNameClick", department);
+    navigate("/department", { state: { department } });
   };
-  const handleManagerClick = (department, index) => {
-    console.log("handleManagerClick", department, index);
-  };
-  const getEmployeeNameForId = async (id) => {
-    console.log("getEmployeeNameForId", id);
-    return await getEmployeeName(id);
+  const handleManagerClick = (e, item) => {
+    console.log("handleManagerClick", e.target.value);
+    console.log(e.target.textContent);
+    const {employeeList} = item
+    const employee = employeeList.filter(
+      (obj) =>
+        e.target.textContent ==
+        `${obj.firstName} ${obj.lastName}`
+    )[0];
+    navigate("/employee", { state: { employee } });
   };
 
-  const getDepartmentsEmployee = async (depId) => {};
+  const handleEmployeeClick = (employee) => {
+    console.log("handleEmployeeClick", employee);
+    navigate("/employee", { state: { employee } });
+  };
   return (
     <div className="divCenter">
       <table border={1} className="center">
@@ -51,18 +63,28 @@ export default function DepartmentComp() {
             return (
               <tr key={index}>
                 <td>
-                  <Button onClick={() => handleNameClick(dep, index)}>
+                  <Button onClick={() => handleNameClick(dep)}>
                     {dep.name}
                   </Button>
                 </td>
                 <td>
-                  <Button onClick={() => handleManagerClick(dep, index)}>
+                  <Button onClick={(e) => handleManagerClick(e, dep)}>
                     {dep.managerName}
                   </Button>
                 </td>
                 <td>
                   <div>
-                     getDepartmentsEmployee
+                    <ul>
+                      {dep.employeeList.map((item, index) => {
+                        return (
+                          <li value={item._id} key={index}>
+                            <Button onClick={() => handleEmployeeClick(item)}>
+                              {item.firstName} {item.lastName}
+                            </Button>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 </td>
               </tr>
@@ -70,6 +92,9 @@ export default function DepartmentComp() {
           })}
         </tbody>
       </table>
+      <Button onClick={() => navigate("/department", { state: {} })}>
+        New Department
+      </Button>
     </div>
   );
 }

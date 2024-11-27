@@ -1,25 +1,31 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { newDepartment } from "../../utils/utilsDepartment";
-import {
-  Box,
-  Button,
-  FormControl,
-  TextField,
-} from "@mui/material";
+import { editDepartment, newDepartment } from "../../utils/utilsDepartment";
+import { Box, Button, FormControl, TextField } from "@mui/material";
 
 export default function NewDepartmentComp() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [department, setDepartment] = React.useState({
+  const [department, setDepartment] = useState({
     name: "",
     managerName: "",
   });
 
+  useEffect(() => {
+    if (state.department) {
+      console.log('state.department',state.department)
+      setDepartment(state.department);
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("user", user);
-    newDepartment(department)
+    if (e.nativeEvent.submitter.name === "btn_edit") {
+      editDepartment(department);
+    } else {
+      newDepartment(department);
+    }
   };
 
   const hadleCancelClick = () => {
@@ -44,6 +50,7 @@ export default function NewDepartmentComp() {
           fullWidth
           label="Department name:"
           variant="outlined"
+          value={department?.name || ""}
           onChange={(e) => {
             setDepartment({ ...department, name: e.target.value });
           }}
@@ -55,15 +62,22 @@ export default function NewDepartmentComp() {
           label="Department manager name:"
           variant="outlined"
           fullWidth
+          value={department?.managerName || ""}
           onChange={(e) => {
             setDepartment({ ...department, managerName: e.target.value });
           }}
         />
       </FormControl>
 
-      <Button type="submit" variant="contained">
-        Save
-      </Button>
+      {state.department ? (
+        <Button type="submit" name="btn_edit" variant="contained">
+          Edit
+        </Button>
+      ) : (
+        <Button type="submit" name="btn_save" variant="contained">
+          Save
+        </Button>
+      )}
       <Button onClick={hadleCancelClick} variant="contained">
         Cancel
       </Button>
