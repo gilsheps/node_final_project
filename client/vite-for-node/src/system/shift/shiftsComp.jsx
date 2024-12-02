@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as React from "react";
-import { getAllShifts ,sendUpdateShift} from "../../utils/utilsShifts";
+import { getAllShifts, sendUpdateShift } from "../../utils/utilsShifts";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 
@@ -29,17 +29,19 @@ export default function ShiftsComp() {
   const hadleSaveClick = (index) => {
     setEditIndex(null);
     console.log("sdfsd", shifts[index]);
-    sendUpdateShift(shifts[index])
+    sendUpdateShift(shifts[index]);
   };
 
-  const handleChange=(index, newProduct)=>{
+  const handleChange = (index, newProduct) => {
     const updatedShifts = [...shifts];
-    console.log("newProduct",updatedShifts[index],newProduct.target.id)
-    updatedShifts[index][newProduct.target.id] = Number(newProduct.target.value);
-    console.log('updatedShiftsss',updatedShifts)
-    setShifts(updatedShifts)
-    setEditIndex(index)
-  }
+    console.log("newProduct", updatedShifts[index], newProduct.target.id);
+    updatedShifts[index][newProduct.target.id] = Number(
+      newProduct.target.value
+    );
+    console.log("updatedShiftsss", updatedShifts);
+    setShifts(updatedShifts);
+    setEditIndex(index);
+  };
 
   return (
     <div className="divCenter">
@@ -59,8 +61,8 @@ export default function ShiftsComp() {
                 <td>
                   <input
                     disabled={editIndex !== index}
-                    id='date'
-                    defaultValue={shifts[index].date || shift.date}
+                    id="date"
+                    defaultValue={shifts[index].date.substring(0, shifts[index].date.indexOf("T")) || shift.date}
                     onChange={(e) => handleChange(index, e)}
                   />
                 </td>
@@ -69,7 +71,9 @@ export default function ShiftsComp() {
                     disabled={editIndex !== index}
                     type="number"
                     id="starting_hour"
-                    defaultValue={shifts[index].startingHour || shift.startingHour}
+                    defaultValue={
+                      shifts[index].startingHour || shift.startingHour
+                    }
                     onChange={(e) => handleChange(index, e)}
                   />
                 </td>

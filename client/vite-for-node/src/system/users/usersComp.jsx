@@ -10,45 +10,28 @@ export default function UsersComp() {
     console.log("stop run twice!!!");
     const fetchData = async () => {
       const { data } = await getAllUsers();
-      // const arr = []
-      setUsersList(data);
-      data.map(async (user) => {
-        const { data: userData } = await getActionsAllowedByUser(user._id);
-        if (userData !== "undefined") {
-          console.log("undefined",user,userData)
-          setUsersList([{ ...data, actionsAllowed: userData.actionAllowd }])
+      // console.log("dataaaa", data);
+      const foo = data.map(async (user) => {
+        const userData = await getActionsAllowedByUser(user._id)
+        user.maxActions = 10;
+        if (userData.data) {
+          user.actionsAllowed = userData.data.actionAllowd;
+        } else {
+          user.actionsAllowed = 10;
         }
-        // console.log("usersssss", user);
-        // console.log('userData',userData)
+        return user;
       });
-      //
-      //   const { data: userData } = await getActionsAllowedByUser(user._id);
-      //   if (data !== "undefined") {
-      //     console.log("undefinedundefined");
-      //     //   console.log("datatatat", data.actionAllowd);
-      //     setUsersList([{ ...data, actionsAllowed: 0 }]);
-      //   } else {
-      //     setUsersList([
-      //       { ...userData, actionsAllowed: userData.actionsAllowed },
-      //     ]);
-      //   }
-        // console.log("userData", userData);
-        console.log("user", usersList);
-      //   // arr.push(updatedObject)
-      //   // console.log("updatedObjectupdatedObject", updatedObject);
-      // });
-      // ;
-      // console.log('arrrrrr',arr)
-      // setUsersList(data);
+
+      const promi = await Promise.all(foo)
+      setUsersList(promi)
+      console.log("fooooo", promi);
     };
     fetchData();
-
-    // getAllUsers().then((users) => {
-
-    //   setUsersList(users.data);
-    // });
   }, []);
 
+  useEffect(() => {
+    console.log("usersListusersList", usersList);
+  }, [usersList]);
   return (
     <div className="divCenter">
       <table border={1} className="center">
@@ -65,12 +48,12 @@ export default function UsersComp() {
                   <div>{user.fullName}</div>
                 </td>
                 <td>
-                  <div>{user.actionsAllowed}</div>
+                  <div>{user.maxActions}</div>
                 </td>
                 <td>
                   <div>
                     {/* {console.log("user._iduser._iduser._id", user._id)} */}
-                    {user.actionAllowd}
+                    {user.actionsAllowed}
                   </div>
                 </td>
               </tr>
