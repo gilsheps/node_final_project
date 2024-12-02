@@ -1,17 +1,17 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService.js");
+const authenticateToken = require("../middleware/authenticateToken.js");
 
 const router = express.Router();
 const SECRET_KEY = "some_key";
-const USER_ID = "some_id";
-const TOKEN_EXPIRATION = "1m";
+const TOKEN_EXPIRATION = "1h";
 
 function generateToken(username) {
   return jwt.sign({ username }, SECRET_KEY, { expiresIn: TOKEN_EXPIRATION });
 }
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res) => {
   const { username, email } = req.body;
   console.log("login", username, email);
 
@@ -30,7 +30,7 @@ router.post("/login", async (req, res, next) => {
   res.json({ token });
 });
 
-router.get("/protected", (req, res) => {
+router.get("/protected", authenticateToken, (req, res) => {
   res.json({ message: "Access granted", user: req.user });
 });
 

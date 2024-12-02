@@ -69,7 +69,7 @@ export default function ShiftsComp() {
                     disabled={editIndex !== index}
                     type="number"
                     id="starting_hour"
-                    defaultValue={shifts[index].starting_hour || shift.starting_hour}
+                    defaultValue={shifts[index].startingHour || shift.startingHour}
                     onChange={(e) => handleChange(index, e)}
                   />
                 </td>
@@ -78,7 +78,7 @@ export default function ShiftsComp() {
                     disabled={editIndex !== index}
                     type="number"
                     id="ending_hour"
-                    defaultValue={shifts[index].ending_hour || shift.ending_hour}
+                    defaultValue={shifts[index].endingHour || shift.endingHour}
                     onChange={(e) => handleChange(index, e)}
                   />
                 </td>

@@ -6,6 +6,7 @@ const router = express.Router();
 // get all employees
 router.get("/", async (req, res) => {
   const filters = req.body;
+  console.log("params", filters);
   const users = await userService.getAllUsers(filters);
   res.send(users);
 });
@@ -13,8 +14,14 @@ router.get("/", async (req, res) => {
 // get user by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const employee = await userService.getById(id);
-  res.json(employee);
+  const user = await userService.getById(id);
+  res.json(user);
+});
+
+router.get("/fullName/:name", async (req, res) => {
+  const { name } = req.params;
+  const user = await userService.getId({ fullName: name });
+  res.json(user);
 });
 
 // create new user

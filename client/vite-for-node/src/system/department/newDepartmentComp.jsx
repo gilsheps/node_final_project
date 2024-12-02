@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import { editDepartment, newDepartment } from "../../utils/utilsDepartment";
 import { Box, Button, FormControl, TextField } from "@mui/material";
+import { getActionsAllowed } from "../../utils/actionsAllowed.js";
 
 export default function NewDepartmentComp() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function NewDepartmentComp() {
   });
 
   useEffect(() => {
+    getActionsAllowed()
     if (state.department) {
       console.log('state.department',state.department)
       setDepartment(state.department);

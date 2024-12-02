@@ -1,0 +1,52 @@
+{
+  "actions": [
+    {
+      "id": "6745e40dd4f7eda7fedd3b5e",
+      "maxActions": 10,
+      "date": "2024-11-26",
+      "actionAllowd": 10
+    },
+    {
+      "id": "6745e40dd4f7eda7fedd3b5e",
+      "maxActions": 10,
+      "date": "2024-11-27",
+      "actionAllowd": 10
+    },
+    {
+      "id": "6745e40dd4f7eda7fedd3b5e",
+      "maxActions": 10,
+      "date": "2024-11-28",
+      "actionAllowd": 10
+    },
+    {
+      "id": "6745e40dd4f7eda7fedd3b5e",
+      "maxActions": 10,
+      "date": "2024-12-01",
+      "actionAllowd": 779
+    },
+    {
+      "id": "6745e3f6d4f7eda7fedd3b5c",
+      "maxActions": 10,
+      "date": "2024-12-01",
+      "actionAllowd": 10
+    },
+    {
+      "id": "6745e41ad4f7eda7fedd3b60",
+      "maxActions": 10,
+      "date": "2024-12-01",
+      "actionAllowd": 42
+    },
+    {
+      "id": "6745e42ed4f7eda7fedd3b62",
+      "maxActions": 10,
+      "date": "2024-12-01",
+      "actionAllowd": 94
+    },
+    {
+      "id": "6745e439d4f7eda7fedd3b64",
+      "maxActions": 10,
+      "date": "2024-12-01",
+      "actionAllowd": 111
+    }
+  ]
+}

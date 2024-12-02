@@ -12,6 +12,10 @@ const getById = (id) => {
   return userRepo.getById(id);
 };
 
+const getId = (name) => {
+  return userRepo.getId(name);
+};
+
 const addUser = (obj) => {
   return userRepo.addUser(obj);
 };
@@ -37,4 +41,5 @@ module.exports = {
   deleteUser,
   getUsersFromJh,
   isUserExists,
+  getId,
 };

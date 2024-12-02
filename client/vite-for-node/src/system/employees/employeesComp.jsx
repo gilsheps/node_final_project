@@ -5,6 +5,7 @@ import { getDepartmentsList } from "../../utils/utilsDepartment";
 import { Button, Select, MenuItem } from "@mui/material";
 import { getAllShifts } from "../../utils/utilsShifts";
 import { getEmployeeName } from "../../utils/utilsEmployee";
+import { getActionsAllowed } from "../../utils/actionsAllowed";
 
 export default function EmployeesComp() {
   const [employees, setEmployees] = useState([{}]);
@@ -13,34 +14,37 @@ export default function EmployeesComp() {
   const [department, setDepartment] = useState({});
   const navigate = useNavigate();
   const handleClick = () => {
+    getActionsAllowed()
     navigate("/employee", { state: {} });
   };
 
   useEffect(() => {
-    getAllEmployee().then((data) => {
-      setEmployees(data.data);
-    });
-    getDepartmentsList().then((data) => {
-      setDepartmentsList(data.data);
-    });
-    getAllShifts().then((data) => {
-      setShifts(data.data);
-    });
+    const fetchData = async () => {
+      const { data } = await getAllEmployee();
+      setEmployees(data);
+      const { data: depData } = await getDepartmentsList();
+      setDepartmentsList(depData);
+      const { data: shiftData } = await getAllShifts();
+      setShifts(shiftData);
+    };
+    fetchData();
   }, []);
 
   const haddleDepartmentsClick = async (item) => {
+    getActionsAllowed()
     const dep = getDepartmentById(item);
     console.log("haddleDepartmentsClick", dep.manager);
     const managerName = await getEmployeeName(dep.manager);
     console.log("haddleDepartmentsClick", managerName);
-    const department = { ...dep, managerName: managerName }
+    const department = { ...dep, managerName: managerName };
     navigate("/department", {
       state: { department },
     });
   };
 
   const handleNameClick = (employee) => {
-    navigate("/employee", { state: { employee } });
+    getActionsAllowed()
+    navigate("/employee", { state: { employee } })
   };
 
   const getDepartmentById = (employee) => {

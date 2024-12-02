@@ -1,22 +1,37 @@
 import axios from "axios";
 
-const getItem = async () => {
-  return new Promise((resolve) => {
-    localStorage.getItem('user');
-    resolve(); // Resolve immediately since localStorage is synchronous
-  });
-};
-
-// Get token from localStorage (or other storage)
-const storage = {...localStorage};
-console.log("api", JSON.parse(storage.user).token);
-const token = JSON.parse(storage.user).token
-// Create Axios instance
 const api = axios.create({
-  baseURL: "http://localhost:3005/", // Replace with your API's base URL
+  baseURL: "http://localhost:3005", // Replace with your API base URL
+  timeout: 10000, // Set a timeout (optional)
   headers: {
-    Authorization: token ? `Bearer ${token}` : "", // Add token if available
+    "Content-Type": "application/json", // Default content type
   },
+  withCredentials: true,
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = JSON.parse(localStorage.getItem("user")).token; // Retrieve the token dynamically
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    // console.error("Request error:", error);
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    return response; // Pass through successful responses
+  },
+  (error) => {
+    // console.error("Response error:", error);
+    // window.location.href = "/login"; // Navigate to login page
+    return Promise.reject(error); // Pass other errors for further handling
+  }
+);
 
 export default api;

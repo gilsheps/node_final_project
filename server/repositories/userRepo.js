@@ -17,6 +17,9 @@ const getById = (id) => {
   return User.findById(id);
 };
 
+const getId = (name) => {
+  return User.findOne(name);
+};
 // Create
 const addUser = async (obj) => {
   console.log("addUser", obj);
@@ -41,4 +44,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUsersFromJh,
+  getId
 };

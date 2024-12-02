@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router";
 import Login from "./login";
@@ -6,6 +6,7 @@ import MainComp from "./mainComp";
 import NewEmployeeComp from "./system/employees/newEmployeeComp";
 import NewDepartmentComp from "./system/department/newDepartmentComp";
 import UsersComp from "./system/users/usersComp";
+import SignOutComp from "./system/signout";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/employee" element={<NewEmployeeComp />} />
       <Route path="/department" element={<NewDepartmentComp />} />
       <Route path="/users" element={<UsersComp />} />
+      <Route path="/signout" element={<SignOutComp />} />
     </Routes>
   );
 }

@@ -6,6 +6,7 @@ import {
   getEmployessByDepartmentList,
 } from "../../utils/utilsDepartment";
 import { Button } from "@mui/material";
+import { getActionsAllowed } from "../../utils/actionsAllowed";
 
 export default function DepartmentComp() {
   const [departmentsList, setDepartmentsList] = useState([]);
@@ -32,11 +33,13 @@ export default function DepartmentComp() {
 
   const handleNameClick = (department) => {
     console.log("handleNameClick", department);
+    getActionsAllowed()
     navigate("/department", { state: { department } });
   };
   const handleManagerClick = (e, item) => {
     console.log("handleManagerClick", e.target.value);
     console.log(e.target.textContent);
+    getActionsAllowed()
     const {employeeList} = item
     const employee = employeeList.filter(
       (obj) =>
@@ -48,6 +51,7 @@ export default function DepartmentComp() {
 
   const handleEmployeeClick = (employee) => {
     console.log("handleEmployeeClick", employee);
+    getActionsAllowed()
     navigate("/employee", { state: { employee } });
   };
   return (

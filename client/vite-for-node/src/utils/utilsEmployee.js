@@ -3,7 +3,7 @@ import api from "./api.js"
 const BASE_URL = "http://localhost:3005/";
 
 const getAllEmployee = async (obj) => {
-  return await api.get(`${BASE_URL}employees`);
+  return api.get('/employees');
 };
 const addNewEmployee = async (obj) => {
   return await api.post(`${BASE_URL}employees`, obj);
@@ -22,7 +22,7 @@ const getEmployeeById = async (id) => {
 };
 
 const getEmployeeName = async (id) => {
-  const {data} = await getEmployeeById(id);
+  const { data } = await getEmployeeById(id);
   return `${data.firstName} ${data.lastName}`;
 };
 export {
@@ -31,5 +31,5 @@ export {
   editEmployee,
   deleteEmployee,
   getEmployeeById,
-  getEmployeeName
+  getEmployeeName,
 };

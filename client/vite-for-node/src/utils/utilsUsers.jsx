@@ -1,9 +1,11 @@
-import api from "./api.js"
-
-const BASE_URL = "http://localhost:3005/users";
+import api from "../utils/api.js";
 
 const getAllUsers = async () => {
-  return await api.get(`${BASE_URL}`);
+  return await api.get("/users");
 };
 
-export { getAllUsers,  };
+const getUserId = async (userName) => {
+  return await api.get(`/users/fullName/${userName}`);
+};
+
+export { getAllUsers, getUserId };

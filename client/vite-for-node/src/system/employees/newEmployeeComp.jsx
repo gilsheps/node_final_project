@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { getDepartmentsList } from "../../utils/utilsDepartment.js";
 import { addNewEmployee, editEmployee } from "../../utils/utilsEmployee";
+import { getActionsAllowed } from "../../utils/actionsAllowed";
 
 export default function NewEmployeeComp() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function NewEmployeeComp() {
   const [departmentsList, setDepartmentsList] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    getActionsAllowed();
     if (e.nativeEvent.submitter.name === "btn_edit") {
       editEmployee(user);
     } else {
@@ -33,7 +35,6 @@ export default function NewEmployeeComp() {
   useEffect(() => {
     getDepartmentsList().then((dep) => {
       setDepartmentsList(dep.data);
-      console.log(state.employee);
       if (state.employee) {
         const depName = dep.data.filter(
           (e) => e._id == state.employee.departmentId

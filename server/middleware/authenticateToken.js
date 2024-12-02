@@ -3,9 +3,9 @@ const SECRET_KEY = "some_key";
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  console.log("authenticateToken", authHeader);
+  // console.log("authenticateToken", authHeader);
   const token = authHeader && authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
-  console.log("authenticateToken", authenticateToken, token);
+  // console.log("authenticateToken", authenticateToken, token);
   if (!token) {
     return res.status(401).json({ error: "Token required" });
   }
